@@ -24,16 +24,87 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@android:style/Widget.ProgressBar.Horizontal"
+
+    <Button
+        android:id="@+id/btnProgressPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Progress pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="4dp"
-        android:max="1000"
-        android:progress="100"
-        android:progressBackgroundTint="#FFFF00"
-        android:progressTint="#FF0000"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:indeterminate="false"
+            android:max="1000"
+            android:progress="0"
+            android:progressBackgroundTint="@android:color/darker_gray"
+            android:progressTint="?attr/colorAccent" />
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:max="1000"
+            android:progress="0"
+            android:progressBackgroundTint="#FFFF00"
+            android:progressTint="#FF0000" />
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:max="1000"
+            android:progress="0"
+            android:progressBackgroundTint="#FFFF00"
+            android:progressTint="#FF0000" />
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:max="1000"
+            android:progress="0"
+            android:progressBackgroundTint="#FFFF00"
+            android:progressTint="#FF0000" />
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:max="1000"
+            android:progress="0"
+            android:progressBackgroundTint="#FFFF00"
+            android:progressTint="#FF0000" />
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:max="1000"
+            android:progress="0"
+            android:progressBackgroundTint="#FFFF00"
+            android:progressTint="#FF0000" />
+
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

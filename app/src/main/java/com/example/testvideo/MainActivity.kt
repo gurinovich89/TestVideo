@@ -1,21 +1,35 @@
 package com.example.testvideo
 
+import android.animation.ValueAnimator
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class MainActivity : AppCompatActivity() {
 
+    /*val ALPHA = object : Property<Float, View>(Float::class.java, "alpha") {
+        override fun setValue(`object`: View, value: Float) {
+            `object`.alpha = value
+        }
+
+        override fun get(`object`: View): Float {
+            return `object`.alpha
+        }
+    };*/
+
     var progressValue: Int = 100
+    lateinit var progressValueAnimator: ValueAnimator
 
     val progressRunnable = Runnable {
         progressBar?.progress = progressValue
         progressValue += 5
-        progressBar.postDelayed(this.progressRunnable, 50)
+        //progressBar.postDelayed(this.progressRunnable, 50)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +38,36 @@ class MainActivity : AppCompatActivity() {
         btnStart.setOnClickListener { showVideo() }
         videoView.setZOrderOnTop(true)
         //videoView.setBackgroundColor(Color.WHITE)
-        progressBar.postDelayed(progressRunnable, 50L)
+        //progressBar.postDelayed(progressRunnable, 50L)
 
+        //ObjectAnimator.ofFloat(progressBar, View.ALPHA, 0, 1).start();
+
+
+        progressValueAnimator = ValueAnimator.ofInt(0, 1000)
+        progressValueAnimator.duration = 30000
+        progressValueAnimator.interpolator = LinearInterpolator()
+        progressValueAnimator.addUpdateListener { animation ->
+            val value = animation.animatedValue as Int
+            progressBar.setProgress(value)
+            Log.i("west", "value=$value")
+        }
+        btnProgressPause.setOnClickListener { pauseOrResumeProgress() }
+
+        /*val progressAnimator = ObjectAnimator.ofFloat(progressBar, "progress", 0.0f, 1000.0f);
+        progressAnimator.setDuration(7000)
+        progressAnimator.start()*/
+    }
+
+    private fun pauseOrResumeProgress() {
+        if (!progressValueAnimator.isStarted) {
+            progressValueAnimator.start()
+            return
+        }
+        if (progressValueAnimator.isPaused) {
+            progressValueAnimator.resume()
+        } else {
+            progressValueAnimator.pause()
+        }
     }
 
     private fun showVideo() {
