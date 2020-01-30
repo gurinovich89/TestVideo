@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">85.132.77.97</domain>
+        <domain includeSubdomains="true">app.albali.az</domain>
+        <domain includeSubdomains="true">maps.googleapis.com</domain>
+        <domain includeSubdomains="true">commondatastorage.googleapis.com</domain>
+        <domain includeSubdomains="true">techslides.com</domain>
+        <domain includeSubdomains="true">docs.google.com</domain>
+    </domain-config>
+
+
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">online.unibank.az/mob</domain>
+        <domain includeSubdomains="true">onlinetst.unibank.az/testmob</domain>
+    </domain-config>
+
+</network-security-config>
