@@ -33,7 +33,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/btnSetDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="set duration"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
     <LinearLayout
+        android:id="@+id/llProgress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -45,7 +54,7 @@
         <ProgressBar
             android:id="@+id/progressBar"
             style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="0dp"
+            android:layout_width="300dp"
             android:layout_height="2dp"
             android:layout_weight="1"
             android:indeterminate="false"
@@ -106,5 +115,49 @@
 
 
     </LinearLayout>
+
+
+    <com.example.testvideo.CustomProgressBar
+        android:id="@+id/customProgressBar"
+        android:layout_width="300dp"
+        android:layout_height="2dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:background="#ccc"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        app:exampleColor="#33b5e5"
+        app:exampleDimension="24sp"
+        app:exampleDrawable="@android:drawable/ic_menu_add"
+        app:exampleString="Hello, CustomProgressBar"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llProgress" />
+
+    <com.example.view.PausableProgressBar
+        android:id="@+id/pausableProgressBar"
+        android:layout_width="300dp"
+        android:layout_height="2dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customProgressBar" />
+
+    <com.example.view.StoriesProgressView
+        android:id="@+id/myStoriesProgressView"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pausableProgressBar"
+        app:progressBackgroundColor="#ccc"
+        app:progressColor="#33b5e5"
+        app:progressSpace="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

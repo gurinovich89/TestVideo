@@ -8,20 +8,13 @@ import android.util.Log
 import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.view.StoriesProgressView
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    /*val ALPHA = object : Property<Float, View>(Float::class.java, "alpha") {
-        override fun setValue(`object`: View, value: Float) {
-            `object`.alpha = value
-        }
-
-        override fun get(`object`: View): Float {
-            return `object`.alpha
-        }
-    };*/
+    val PROGRESS_TIME_MS = 3000L
 
     var progressValue: Int = 100
     lateinit var progressValueAnimator: ValueAnimator
@@ -44,30 +37,81 @@ class MainActivity : AppCompatActivity() {
 
 
         progressValueAnimator = ValueAnimator.ofInt(0, 1000)
-        progressValueAnimator.duration = 30000
+        progressValueAnimator.duration = PROGRESS_TIME_MS
         progressValueAnimator.interpolator = LinearInterpolator()
         progressValueAnimator.addUpdateListener { animation ->
             val value = animation.animatedValue as Int
             progressBar.setProgress(value)
-            Log.i("west", "value=$value")
+            val pr = value.toFloat() / 1000
+            customProgressBar.setProgressValue(pr)
+            //Log.i("west", "value=$value")
         }
         btnProgressPause.setOnClickListener { pauseOrResumeProgress() }
+        btnSetDuration.setOnClickListener { setCustomDuration() }
+
+        pausableProgressBar.setDuration(PROGRESS_TIME_MS)
+
 
         /*val progressAnimator = ObjectAnimator.ofFloat(progressBar, "progress", 0.0f, 1000.0f);
         progressAnimator.setDuration(7000)
         progressAnimator.start()*/
+
+
+        //--MySttoriesProgressView
+        myStoriesProgressView.apply {
+            this.setStoryDuration(6, PROGRESS_TIME_MS)
+            this.setStoriesListener(object : StoriesProgressView.StoriesListener {
+                override fun onPrev() {
+
+                }
+
+                override fun onComplete() {
+
+                }
+
+                override fun onNext() {
+                    storyIndex++
+                    myStoriesProgressView.startStories(storyIndex, 0)
+                }
+            })
+            this.startStories()
+        }
     }
 
+    private fun setCustomDuration() {
+        pauseDuration = myStoriesProgressView.pause()
+        myStoriesProgressView.updateDuration(storyIndex, 10000, 1000)
+        myStoriesProgressView.updateDuration(3, 10000)
+        //myStoriesProgressView.startStories(storyIndex, pauseDuration)
+    }
+
+    var storyIndex = 0
+    var pauseDuration = 0L
+    var isStoryProgressRunning = true
+
     private fun pauseOrResumeProgress() {
+        if (isStoryProgressRunning) {
+            pauseDuration = myStoriesProgressView.pause()
+            isStoryProgressRunning = false
+        } else {
+            myStoriesProgressView.resume()
+            //myStoriesProgressView.startStories(storyIndex, pauseDuration)
+            isStoryProgressRunning = true
+        }
+
         if (!progressValueAnimator.isStarted) {
             progressValueAnimator.start()
+            //pausableProgressBar.startProgress()
             return
         }
         if (progressValueAnimator.isPaused) {
             progressValueAnimator.resume()
+            //pausableProgressBar.resumeProgress()
         } else {
             progressValueAnimator.pause()
+            //pausableProgressBar.pauseProgress()
         }
+
     }
 
     private fun showVideo() {
