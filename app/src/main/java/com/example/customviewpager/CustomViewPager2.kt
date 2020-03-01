@@ -2,13 +2,14 @@ package com.example.customviewpager
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.testvideo.R
 
 class CustomViewPager2 : FrameLayout {
 
@@ -37,7 +38,8 @@ class CustomViewPager2 : FrameLayout {
     }
 
     private fun init(context: Context) {
-        mTouchSlop = ViewConfiguration.get(getContext()).scaledTouchSlop
+        mTouchSlop = ViewConfiguration.get(getContext()).scaledPagingTouchSlop
+        Log.i("west", "mTouchSlop=$mTouchSlop")
         viewPager = ViewPager2(context).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -47,7 +49,7 @@ class CustomViewPager2 : FrameLayout {
         viewPager.isNestedScrollingEnabled = true
         addView(viewPager)
 
-        fakeView = View(context).apply {
+        /*fakeView = View(context).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
@@ -55,11 +57,16 @@ class CustomViewPager2 : FrameLayout {
         }
         fakeView.elevation = 100f
         fakeView.setBackgroundColor(resources.getColor(R.color.colorFake))
-        addView(fakeView)
+        addView(fakeView)*/
     }
 
     override fun onTouchEvent(ev: MotionEvent): Boolean {
+        Log.i("west", "onTouchEvent event=$ev")
+        return super.onTouchEvent(ev)
+    }
 
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        Log.i("west", "dispatchTouchEvent event=$ev")
         var isVerticalScroling = false
         var isHorizontalScrolling = false
         val action = ev.action
@@ -77,7 +84,7 @@ class CustomViewPager2 : FrameLayout {
                     }
                 }
                 if (!isVerticalScroling) {
-                    if (xDiff > mTouchSlop) {
+                    if (xDiff > mTouchSlop && xDiff > yDiff * 2) {
                         isHorizontalScrolling = true
                     }
                 }
@@ -92,52 +99,23 @@ class CustomViewPager2 : FrameLayout {
         if (ev.action == MotionEvent.ACTION_MOVE) {
             if (isVerticalScroling) {
                 val newEvent = MotionEvent.obtain(ev)
-                newEvent.setLocation(ev.x, ev.y)
+                newEvent.setLocation(mLastMotionX.toFloat(), ev.y)
+                val rvPager = viewPager.getChildAt(0) as? RecyclerView
+                val itemView = rvPager?.layoutManager?.findViewByPosition(viewPager.currentItem)
+                itemView?.dispatchTouchEvent(newEvent)
                 //viewPager.dispatchTouchEvent(newEvent)
             } else if (isHorizontalScrolling) {
                 val newEvent = MotionEvent.obtain(ev)
                 newEvent.setLocation(ev.x, ev.y)
-                //viewPager.dispatchTouchEvent(newEvent)
-            } else {
-                val newEvent = MotionEvent.obtain(ev)
-                newEvent.action = MotionEvent.ACTION_UP
-                //viewPager.dispatchTouchEvent(newEvent)
+                viewPager.dispatchTouchEvent(newEvent)
             }
-        } else {
-            //viewPager.dispatchTouchEvent(ev)
+            return true
         }
-
-
-        return super.onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
     }
 
-    /*override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
-        val action = ev.action
-        when (action and MotionEvent.ACTION_MASK) {
-            MotionEvent.ACTION_MOVE -> {
-                val y = ev.y.toInt()
-                val x = ev.x.toInt()
-                val yDiff = Math.abs(y - mLastMotionY)
-                val xDiff = Math.abs(x - mLastMotionX)
-                if (yDiff > mTouchSlop) {
-                    mLastMotionY = y
-                    mLastMotionX = x
-                    if (yDiff > xDiff) {
-                        val rvView = viewPager?.getChildAt(0) as? RecyclerView
-                        val pageIndex = viewPager?.currentItem ?: 0
-                        val itemView = rvView?.getChildAt(pageIndex) as? ViewGroup
-                        val result = itemView?.onInterceptTouchEvent(ev)
-                        return true
-                    }
-                }
-            }
-
-            MotionEvent.ACTION_DOWN -> {
-                mLastMotionY = ev.y.toInt()
-                mLastMotionX = ev.x.toInt()
-            }
-        }
-
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        Log.i("west", "onInterceptTouchEvent event=$ev")
         return super.onInterceptTouchEvent(ev)
-    }*/
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.customviewpager
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.customviewpager.dummy.DummyContent
 import com.example.testvideo.R
@@ -9,9 +10,8 @@ import kotlinx.android.synthetic.main.activity_custom_view_pager_test.*
 class CustomViewPagerTestActivity : AppCompatActivity(),
     StringFragment.OnListFragmentInteractionListener {
     override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
-        //TODO
+        Toast.makeText(applicationContext, item?.content ?: "null", Toast.LENGTH_SHORT).show()
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
