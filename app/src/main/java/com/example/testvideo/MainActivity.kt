@@ -1,6 +1,7 @@
 package com.example.testvideo
 
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.customviewpager.CustomViewPagerTestActivity
 import com.example.view.StoriesProgressView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -28,7 +30,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        btnStart.setOnClickListener { showVideo() }
+        btnStart.setOnClickListener {
+            if (true) {
+                val intent = Intent(applicationContext, CustomViewPagerTestActivity::class.java)
+                startActivity(intent)
+                return@setOnClickListener
+            }
+            showVideo()
+        }
         videoView.setZOrderOnTop(true)
         //videoView.setBackgroundColor(Color.WHITE)
         //progressBar.postDelayed(progressRunnable, 50L)
