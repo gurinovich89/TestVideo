@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -19,7 +18,6 @@ class CustomViewPager2 : FrameLayout {
     private var mTouchSlop: Int = 0
 
     lateinit var viewPager: ViewPager2
-    lateinit var fakeView: View
 
     constructor(context: Context) : super(context) {
         init(context)
@@ -38,7 +36,7 @@ class CustomViewPager2 : FrameLayout {
     }
 
     private fun init(context: Context) {
-        mTouchSlop = ViewConfiguration.get(getContext()).scaledPagingTouchSlop
+        mTouchSlop = ViewConfiguration.get(getContext()).scaledTouchSlop
         Log.i("west", "mTouchSlop=$mTouchSlop")
         viewPager = ViewPager2(context).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -46,23 +44,7 @@ class CustomViewPager2 : FrameLayout {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
         }
-        viewPager.isNestedScrollingEnabled = true
         addView(viewPager)
-
-        /*fakeView = View(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
-        fakeView.elevation = 100f
-        fakeView.setBackgroundColor(resources.getColor(R.color.colorFake))
-        addView(fakeView)*/
-    }
-
-    override fun onTouchEvent(ev: MotionEvent): Boolean {
-        Log.i("west", "onTouchEvent event=$ev")
-        return super.onTouchEvent(ev)
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -103,7 +85,6 @@ class CustomViewPager2 : FrameLayout {
                 val rvPager = viewPager.getChildAt(0) as? RecyclerView
                 val itemView = rvPager?.layoutManager?.findViewByPosition(viewPager.currentItem)
                 itemView?.dispatchTouchEvent(newEvent)
-                //viewPager.dispatchTouchEvent(newEvent)
             } else if (isHorizontalScrolling) {
                 val newEvent = MotionEvent.obtain(ev)
                 newEvent.setLocation(ev.x, ev.y)
@@ -112,10 +93,5 @@ class CustomViewPager2 : FrameLayout {
             return true
         }
         return super.dispatchTouchEvent(ev)
-    }
-
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        Log.i("west", "onInterceptTouchEvent event=$ev")
-        return super.onInterceptTouchEvent(ev)
     }
 }
